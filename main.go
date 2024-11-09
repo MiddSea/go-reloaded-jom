@@ -10,7 +10,7 @@ import (
 
 func main() {
 	sampleInFile := os.Args[1]
-	reskultOutFile := os.Args[2]
+	resultOutFile := os.Args[2]
 	sampleTxt := readSampleFile(sampleInFile)
 	resultTxt := processTxt(sampleTxt)
 	err := writeResult(resultOutFile, resultTxt)
@@ -25,7 +25,7 @@ func readSampleFile(filename string) string {
 }
 
 func writeResult(filename string, content string) error {
-	err := os.WriteFile(filename, []byte(content), 0644) // error handling is ignored
+	err := os.WriteFile(filename, []byte(content), 0644) //
 	if err != nil {	
 		log.Panicf("failed to write to file: %v", err) // needs log package
 	}

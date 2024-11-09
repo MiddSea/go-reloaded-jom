@@ -18,6 +18,8 @@ runtimes:
 # This is the section where you manage your linters. (https://docs.trunk.io/check/configuration)
 lint:
   enabled:
+    - yamllint@1.35.1
+    - checkov@3.2.282
     - osv-scanner@1.9.1
     - golangci-lint@1.61.0
     - gofmt@1.20.4

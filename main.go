@@ -10,7 +10,7 @@ import (
 
 func main() {
 	sampleInFile := os.Args[1]
-	resultOutFile := os.Args[2]
+	reskultOutFile := os.Args[2]
 	sampleTxt := readSampleFile(sampleInFile)
 	resultTxt := processTxt(sampleTxt)
 	err := writeResult(resultOutFile, resultTxt)

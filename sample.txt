@@ -1,1 +1,1 @@
-here' is 'a t'ext with a (cap, 4) apostfgffrophe '  annd another one'. a
+here' is 'a t'ext with a (cap, 4) apostgrophe '  and another one'. a

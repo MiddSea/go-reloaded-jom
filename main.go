@@ -15,7 +15,7 @@ func main() {
 	resultTxt := processTxt(sampleTxt)
 	err := writeResult(resultOutFile, resultTxt)
 	if err != nil {
-		log.Fatalf("write result failed to write to file: %v", err)
+		log.Panicf("write result failed to write to file: %v", err)
 	}
 }
 
@@ -27,7 +27,7 @@ func readSampleFile(filename string) string {
 func writeResult(filename string, content string) error {
 	err := os.WriteFile(filename, []byte(content), 0644) //
 	if err != nil {	
-		log.Panicf("failed to write to file: %v", err) // needs log package
+		log.Panicf("failed to writeResult to file: %v", err) // needs log package
 	}
 	return err
 }

@@ -5,23 +5,45 @@ import (
 	"os"
 	"strconv"
 	"strings"
-
+   // "errors"
+	"fmt"
 )
 
 func main() {
+	err := checkArgs(os.Args)
+	checkError(err)
 	sampleInFile := os.Args[1]
 	resultOutFile := os.Args[2]
-	sampleTxt := readSampleFile(sampleInFile)
+	sampleTxt, err := readSampleFile(sampleInFile)
+	checkError(err)
 	resultTxt := processTxt(sampleTxt)
-	err := writeResult(resultOutFile, resultTxt)
-	if err != nil {
-		log.Panicf("write result failed to write to file: %v", err)
+	err = writeResult(resultOutFile, resultTxt)
+	checkError(err)
+}
+
+func checkArgs(args []string) (err error) {
+	switch len(args) {
+	case 1:
+		err = fmt.Errorf("no input / output files given")
+		return err // return false and error message if less than 2 arguments
+	case 2:
+		err = fmt.Errorf("only input, no output file given")
+		return err // return false and error message if less than 3 arguments
+	case 3:
+		return nil	// return true if 3 arguments
+	default:
+		err = fmt.Errorf("too many arguments")
+		return err // return false and error message if more than 3 arguments
 	}
 }
 
-func readSampleFile(filename string) string {
-	content, _ := os.ReadFile(filename) // error handling is ignored
-	return string(content)
+func readSampleFile(filename string) (content string, err error){
+	var contentB []byte
+	contentB, err = os.ReadFile(filename)
+	if err != nil {	
+		log.Panicf("failed to readSample  file: %v", err) // needs log package
+	}
+	return string(contentB), err
 }
 
 func writeResult(filename string, content string) error {
@@ -30,6 +52,12 @@ func writeResult(filename string, content string) error {
 		log.Panicf("failed to writeResult to file: %v", err) // needs log package
 	}
 	return err
+}
+
+func checkError(err error) {
+	if err != nil {
+		log.Panicf("error: %v", err)
+	}
 }
 
 func processTxt(txt string) string {

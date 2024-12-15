@@ -33,7 +33,7 @@ func checkArgs(args []string) (err error) {
 	case 3:
 		return nil // return true if 3 arguments
 	default:
-		err = fmt.Errorf("too many arguments")
+		err = fmt.Errorf("too many arguments!")
 		return err // return false and error message if more than 3 arguments
 	}
 }

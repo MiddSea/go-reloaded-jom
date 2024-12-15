@@ -5,7 +5,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
-   // "errors"
+
+	// "errors"
 	"fmt"
 )
 
@@ -30,17 +31,17 @@ func checkArgs(args []string) (err error) {
 		err = fmt.Errorf("only input, no output file given")
 		return err // return false and error message if less than 3 arguments
 	case 3:
-		return nil	// return true if 3 arguments
+		return nil // return true if 3 arguments
 	default:
 		err = fmt.Errorf("too many arguments")
 		return err // return false and error message if more than 3 arguments
 	}
 }
 
-func readSampleFile(filename string) (content string, err error){
+func readSampleFile(filename string) (content string, err error) {
 	var contentB []byte
 	contentB, err = os.ReadFile(filename)
-	if err != nil {	
+	if err != nil {
 		log.Panicf("failed to readSample  file: %v", err) // needs log package
 	}
 	return string(contentB), err
@@ -48,7 +49,7 @@ func readSampleFile(filename string) (content string, err error){
 
 func writeResult(filename string, content string) error {
 	err := os.WriteFile(filename, []byte(content), 0644) //
-	if err != nil {	
+	if err != nil {
 		log.Panicf("failed to writeResult to file: %v", err) // needs log package
 	}
 	return err
@@ -62,17 +63,17 @@ func checkError(err error) {
 
 func processTxt(txt string) string {
 	// split text into words ignoring multiple white spaces.
-	words := strings.Fields(txt)  
+	words := strings.Fields(txt)
 	quoteCount := 0
 	for i, word := range words {
-		lastWordIndex := len(words)-1
+		lastWordIndex := len(words) - 1
 		islastWord := i == lastWordIndex
 		switch word {
 		case "A", "a":
-			print(">isLastWord:,", islastWord, "|a or A: ", i,"len(words)", len(words),"<")
+			print(">isLastWord:,", islastWord, "|a or A: ", i, "len(words)", len(words), "<")
 			if !islastWord && strings.Contains("aeiouhAEIOUH", string(words[i+1][0])) { // check next word in range
 				words[i] += "n"
-			} 
+			}
 		case "'":
 			quoteCount++
 			if quoteCount%2 == 1 {
@@ -179,8 +180,8 @@ func processText(text string) string {
 		}
 	}
 	return strings.Join(removeCommands(words), " ")
-} 
-	*/
+}
+*/
 
 func extractDigit(word string) int {
 	myint, _ := strconv.Atoi(word[:len(word)-1])
@@ -260,6 +261,7 @@ func Lower(str *string) {
 func Upper(str *string) {
 	*str = strings.ToUpper(*str)
 }
+
 /*
 func readSampleFile(filename string) string {
 	content, _ := os.ReadFile(filename)

@@ -69,11 +69,6 @@ func processTxt(txt string) string {
 		lastWordIndex := len(words) - 1
 		islastWord := i == lastWordIndex
 		switch word {
-		case "A", "a":
-			print(">isLastWord:,", islastWord, "|a or A: ", i, "len(words)", len(words), "<")
-			if !islastWord && strings.Contains("aeiouhAEIOUH", string(words[i+1][0])) { // check next word in range
-				words[i] += "n"
-			}
 		case "'":
 			quoteCount++
 			if quoteCount%2 == 1 {
@@ -82,6 +77,11 @@ func processTxt(txt string) string {
 				words[i-2] += word
 			} else {
 				words[i-1] += word
+			}
+		case "A", "a":
+			print(">isLastWord:", islastWord, "|a or A: ", i, "len(words)", len(words), "<")
+			if !islastWord && strings.Contains("aeiouhAEIOUH", string(words[i+1][0])) { // check next word in range
+				words[i] += "n"
 			}
 		case "(bin)":
 			words[i-1] = strconv.Itoa(Bin2Dec(words[i-1]))
@@ -153,9 +153,9 @@ func processText(text string) string {
 			words[i-1] = strconv.Itoa(Bin2Dec(words[i-1]))
 		case "(hex)":
 			words[i-1] = strconv.Itoa(Hex2Dec(words[i-1]))
-		case "(cap)":
+		case "(cap)":d
 			Cap(&words[i-1])
-		Distributed version control systems (DVCS)case "(low)":
+		case "(low)":
 			Lower(&words[i-1])
 		case "(up)":
 			Upper(&words[i-1])

@@ -53,7 +53,7 @@ Workspace Folder (go-reloaded-jom): /home/midsea/gitHub/go-reloaded-jom
  GODEBUG=''
  GOTELEMETRY='on'
  GOTELEMETRYDIR='/home/midsea/.config/go/telemetry'
- GCCGO='gccgo'
+ GCCGO='gccgo'a
  GOAMD64='v1'
  AR='ar'
  CC='gcc'

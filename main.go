@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -13,13 +14,20 @@ import (
 func main() {
 	err := checkArgs(os.Args)
 	checkError(err)
+
 	sampleInFile := os.Args[1]
 	resultOutFile := os.Args[2]
+
 	sampleTxt, err := readSampleFile(sampleInFile)
 	checkError(err)
-	resultTxt := processTxt(sampleTxt)
+
+	resultTxt, err := processTxt(sampleTxt)
+	checkError(err)
+
 	err = writeResult(resultOutFile, resultTxt)
 	checkError(err)
+	fmt.Println("Conversion successful. Result saved in:", resultOutFile)
+
 }
 
 func checkArgs(args []string) (err error) {
@@ -33,7 +41,7 @@ func checkArgs(args []string) (err error) {
 	case 3:
 		return nil // return true if 3 arguments
 	default:
-		err = fmt.Errorf("too many arguments!")
+		err = fmt.Errorf("too many arguments")
 		return err // return false and error message if more than 3 arguments
 	}
 }
@@ -45,6 +53,7 @@ func readSampleFile(filename string) (content string, err error) {
 		log.Panicf("failed to readSample  file: %v", err) // needs log package
 	}
 	return string(contentB), err
+
 }
 
 func writeResult(filename string, content string) error {
@@ -61,11 +70,117 @@ func checkError(err error) {
 	}
 }
 
-func processTxt(txt string) string {
+func processTxt(txt string) (oTxt string, err error) {
 	// split text into words ignoring multiple white spaces.
 	words := strings.Fields(txt)
-	quoteCount := 0
+	// quoteCount := 0
+
+	words, err = processQuotes(words)
+	checkError(err)
+
+	words, err = processPunctuation(words)
+	checkError(err)
+
+	words, err = processAorAn(words)
+	checkError(err)
+
+	// process commands bin, hex,
+	// and cap, low, up for single words multiple words.
+	words, err = processCommands(words)
+	checkError(err)
+
+	return strings.Join(words, " "), nil
+}
+func processQuotes(words []string) ([]string, error) {
+	countQuote := 0
+	openQuote := false
+	print("processing quotes...")
+	for i := 0; i < len(words); i++ {
+		print("\n\tword ",i)
+		word := words[i]
+		print(":", word, " ")
+		openQuote = countQuote%2 == 1
+		if word == "one" {
+			words = slices.Delete(words, i, i)
+		}
+		if strings.HasPrefix(word, "'") && openQuote {
+			countQuote++
+			word = strings.TrimPrefix(word, "'")
+			if word == "" {
+				words = slices.Delete(words, i, i)
+			}
+
+			print(" countQuote:", countQuote)
+			prevWord := words[i-2]
+			print(" prevWord:", countQuote)
+
+			words[i-2] = prevWord + "'"
+			countQuote += strings.Count(word, "'")
+		}
+		if strings.HasSuffix(word, "'") && !openQuote {
+			words[i] = strings.TrimSuffix(word, "'")
+			if words[i] == "" {
+				words = slices.Delete(words, i, i)
+				i--
+			}
+		}
+	}
+	print("Processing quotes...")
+	return words, nil
+}
+
+// if first character of word is punctuation take all punctuation characters that are a part of the
+// prefix of the word and add them to the previous word
+// and remove the punctuation from the current word.
+func processPunctuation(words []string) ([]string, error) {
+
+	/*for i, word := range words {
+
+		if strings.Contains(".,!?:;", string(word[0])) {
+			if i > 0 {
+				words[i-1] += string(word[0])
+			} else {
+				words[i-1] += string(word[0])
+			}
+			words[i] = word[1:]
+		}
+					countQuote++}  */
+	print("Processing punctuation...")
+	return words, nil
+}
+func processAorAn(words []string) ([]string, error) {
 	for i, word := range words {
+		if (word == "A" || word == "a") && i < len(words)-1 {
+			nextWord := words[i+1]
+			if strings.ContainsAny(string(nextWord[0]), "aeiouhAEIOUH") {
+				words[i] = word + "n"
+			}
+		}
+	}
+	print("Processing punctuation...")
+	return words, nil
+}
+
+/*func returnPrefixPunctuation(word string) string {
+	punctuation := ""
+	for _, c := range word {
+		if strings.Contains(".,!?:;", string(c)) {
+			punctuation += string(c)
+		} else {
+			break
+		}
+	}
+	return punctuation
+}*/
+
+func processCommands(words []string) ([]string, error) {
+	// panic("UNIMPLEMENTED")
+	print("UNIMPLEMENTED_")
+	print("Processing commands...")
+	return words, nil
+}
+
+/*	for i, word := range words {
 		lastWordIndex := len(words) - 1
 		islastWord := i == lastWordIndex
 		switch word {
@@ -73,7 +188,7 @@ func processTxt(txt string) string {
 			quoteCount++
 			if quoteCount%2 == 1 {
 				words[i+1] = word + words[i+1]
-			} else if strings.Contains("...,!?:;", words[i-1]) {
+			} else if strings.Contains(".,!?:;", words[i-1]) {
 				words[i-2] += word
 			} else {
 				words[i-1] += word
@@ -117,6 +232,7 @@ func processTxt(txt string) string {
 }
 
 /*
+/*	for i, word := range words {
 package main
 
 import (
@@ -137,7 +253,7 @@ func processText(text string) string {
 	for i, word := range words {
 		switch word {
 		case "A", "a":
-			if strings.Contains("aeiouhAEIOUH", string(words[i+1][0])) {
+			if stringsProcessing.Contains("aeiouhAEIOUH", string(words[i+1][0])) {
 				words[i] += "n"
 			}
 		case "'":
@@ -151,7 +267,7 @@ func processText(text string) string {
 			}
 		case "(bin)":
 			words[i-1] = strconv.Itoa(Bin2Dec(words[i-1]))
-		case "(hex)":
+		case "(hex)":Processing
 			words[i-1] = strconv.Itoa(Hex2Dec(words[i-1]))
 		case "(cap)":d
 			Cap(&words[i-1])
@@ -174,7 +290,7 @@ func processText(text string) string {
 					words[i-3] += string(word[0])
 				} else {
 					words[i-1] += string(word[0])
-				}
+
 				words[i] = word[1:]
 			}
 		}
@@ -263,7 +379,7 @@ func Upper(str *string) {
 }
 
 /*
-func readSampleFile(filename string) string {
+func readSampleFile(filename sProcessingtring) string {
 	content, _ := os.ReadFile(filename)
 	return string(content)
 }

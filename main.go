@@ -96,18 +96,18 @@ func processQuotes(words []string) ([]string, error) {
 	openQuote := false
 	print("processing quotes...")
 	for i := 0; i < len(words); i++ {
-		print("\n\tword ",i)
+		print("\n\tword ", i)
 		word := words[i]
 		print(":", word, " ")
 		openQuote = countQuote%2 == 1
 		if word == "one" {
-			words = slices.Delete(words, i, i)
+			words = slices.Delete(words, i, i+1)
 		}
 		if strings.HasPrefix(word, "'") && openQuote {
 			countQuote++
 			word = strings.TrimPrefix(word, "'")
 			if word == "" {
-				words = slices.Delete(words, i, i)
+				words = slices.Delete(words, i, i+1)
 			}
 
 			print(" countQuote:", countQuote)
@@ -120,7 +120,7 @@ func processQuotes(words []string) ([]string, error) {
 		if strings.HasSuffix(word, "'") && !openQuote {
 			words[i] = strings.TrimSuffix(word, "'")
 			if words[i] == "" {
-				words = slices.Delete(words, i, i)
+				words = slices.Delete(words, i, i+1)
 				i--
 			}
 		}
@@ -136,15 +136,15 @@ func processPunctuation(words []string) ([]string, error) {
 
 	/*for i, word := range words {
 
-		if strings.Contains(".,!?:;", string(word[0])) {
-			if i > 0 {
-				words[i-1] += string(word[0])
-			} else {
-				words[i-1] += string(word[0])
-			}
-			words[i] = word[1:]
+	if strings.Contains(".,!?:;", string(word[0])) {
+		if i > 0 {
+			words[i-1] += string(word[0])
+		} else {
+			words[i-1] += string(word[0])
 		}
-					countQuote++}  */
+		words[i] = word[1:]
+	}
+				countQuote++}  */
 	print("Processing punctuation...")
 	return words, nil
 }

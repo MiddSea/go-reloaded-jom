@@ -113,13 +113,14 @@ func processQuotes(words []string) ([]string, error) {
 
 			words[i-2] = prevWord + "'"
 			countQuote += strings.Count(word, "'")
-		}
-		if strings.HasSuffix(word, "'") && !openQuote {
+		} else if strings.HasSuffix(word, "'") && !openQuote {
 			words[i] = strings.TrimSuffix(word, "'")
 			if words[i] == "" {
 				words = slices.Delete(words, i, i+1)
 				i--
 			}
+		} else if strings.Contains(word, "'") {
+			countQuote += strings.Count(word, "'")
 		}
 	}
 	print("Processing quotes...")

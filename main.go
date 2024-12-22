@@ -7,10 +7,9 @@ import (
 	"strconv"
 	"strings"
 
-	// "errors"
+	//"errors"
 	"fmt"
 )
-
 func main() {
 	err := checkArgs(os.Args)
 	checkError(err)
@@ -91,38 +90,51 @@ func processTxt(txt string) (oTxt string, err error) {
 
 	return strings.Join(words, " "), nil
 }
-func processQuotes(words []string) ([]string, error) {
+func processQuotes(words []string) (oWords []string, err error) {
 	countQuote := 0
 	openQuote := false
 	print("processing quotes...")
 	for i := 0; i < len(words); i++ {
-		print("\n\tword ", i)
-		word := words[i]
-		print(":", word, " ")
+		fmt.Printf("\n\tword %v", i)
+		// words[i] := words[i]
+		fmt.Printf(":%v ", words)
 		openQuote = countQuote%2 == 1
-		if strings.HasPrefix(word, "'") && openQuote {
-			countQuote++
-			word = strings.TrimPrefix(word, "'")
-			if word == "" {
+		if strings.HasPrefix(words[i], "'") && openQuote && i > 0 {
+		    countQuote++ 
+			words[i] = strings.TrimPrefix(words[i], "'")
+			if words[i] == "" {
 				words = slices.Delete(words, i, i+1)
 			}
 
-			print(" countQuote:", countQuote)
-			prevWord := words[i-2]
-			print(" prevWord:", countQuote)
+			prevWord := words[i-1]
 
-			words[i-2] = prevWord + "'"
-			countQuote += strings.Count(word, "'")
-		} else if strings.HasSuffix(word, "'") && !openQuote {
-			words[i] = strings.TrimSuffix(word, "'")
+			words[i-1] = prevWord + "'"
+			countQuote += strings.Count(words[i], "'")
+			fmt.Printf(" prevWord:%v words: %v", prevWord, words)
+			fmt.Printf(" countQuote:%v", countQuote)
+		}
+		if strings.Contains(words[i], "'") {
+			countQuote += strings.Count(words[i], "'")
+			fmt.Printf(" countQuote:%v", countQuote)
+		}
+
+		if strings.HasSuffix(words[i], "'") && !openQuote && i < len(words) - 1 {
+			words[i] = strings.TrimSuffix(words[i], "'")
 			if words[i] == "" {
 				words = slices.Delete(words, i, i+1)
 				i--
 			}
-		} else if strings.Contains(word, "'") {
-			countQuote += strings.Count(word, "'")
+			countQuote += strings.Count(words[i], "'")
+			words[i+1] = "'" + words[i+1]
+			fmt.Printf(" words[i+1]:%v words: %v", words[i+1], words)
+			fmt.Printf(" countQuote:%v", countQuote)
+
 		}
+/*	if openQuote {
+		err = errors.New("open quote, missing closing quote")
+		return words, err
 	}
+*/
 	print("Processing quotes...")
 	return words, nil
 }
@@ -150,7 +162,7 @@ func processAorAn(words []string) ([]string, error) {
 	for i, word := range words {
 		if (word == "A" || word == "a") && i < len(words)-1 {
 			nextWord := words[i+1]
-			if strings.ContainsAny(string(nextWord[0]), "aeiouhAEIOUH") {
+			if i < len(words) && strings.ContainsAny(string(nextWord[0]), "aeiouhAEIOUH") {
 				words[i] = word + "n"
 			}
 		}

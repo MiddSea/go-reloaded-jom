@@ -100,9 +100,6 @@ func processQuotes(words []string) ([]string, error) {
 		word := words[i]
 		print(":", word, " ")
 		openQuote = countQuote%2 == 1
-		if word == "one" {
-			words = slices.Delete(words, i, i+1)
-		}
 		if strings.HasPrefix(word, "'") && openQuote {
 			countQuote++
 			word = strings.TrimPrefix(word, "'")

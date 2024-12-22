@@ -112,13 +112,10 @@ func processQuotes(words []string) (oWords []string, err error) {
 			countQuote += strings.Count(words[i], "'")
 			fmt.Printf(" prevWord:%v words: %v", prevWord, words)
 			fmt.Printf(" countQuote:%v", countQuote)
-		}
-		if strings.Contains(words[i], "'") {
+		} else if strings.Contains(words[i], "'") {
 			countQuote += strings.Count(words[i], "'")
 			fmt.Printf(" countQuote:%v", countQuote)
-		}
-
-		if strings.HasSuffix(words[i], "'") && !openQuote && i < len(words) - 1 {
+		} else if strings.HasSuffix(words[i], "'") && !openQuote && i < len(words) - 1 {
 			words[i] = strings.TrimSuffix(words[i], "'")
 			if words[i] == "" {
 				words = slices.Delete(words, i, i+1)
@@ -130,11 +127,12 @@ func processQuotes(words []string) (oWords []string, err error) {
 			fmt.Printf(" countQuote:%v", countQuote)
 
 		}
-/*	if openQuote {
+	}
+	/*	if openQuote {
 		err = errors.New("open quote, missing closing quote")
 		return words, err
 	}
-*/
+	*/
 	print("Processing quotes...")
 	return words, nil
 }

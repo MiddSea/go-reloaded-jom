@@ -10,6 +10,7 @@ import (
 	//"errors"
 	"fmt"
 )
+
 func main() {
 	err := checkArgs(os.Args)
 	checkError(err)
@@ -99,42 +100,67 @@ func processQuotes(words []string) (oWords []string, err error) {
 		// words[i] := words[i]
 		fmt.Printf(":%q ", words)
 		openQuote = countQuote%2 == 1
+		if words[i] == "'" {
+			countQuote++
+			openQuote = countQuote%2 == 1
+
+			// openQuote
+			if openQuote && i > 0 {
+				prevWord := words[i-1]
+				words[i-1] = "'" + prevWord
+				// !openQuote
+			} else if !openQuote && i < len(words)-1 {
+				nextWord := words[i+1]
+				words[i+1] = nextWord + "'"
+			}
+
+			// delete current word
+			words = slices.Delete(words, i, i+1)
+			// TO DO: check if 'i' needs to be decremented
+			//i--
+		} 
 		if strings.HasPrefix(words[i], "'") && openQuote && i > 0 {
-		    countQuote++ 
+			countQuote++
 			words[i] = strings.TrimPrefix(words[i], "'")
+			prevWord := words[i-1]
 			if words[i] == "" {
 				words = slices.Delete(words, i, i+1)
 			}
 
-			prevWord := words[i-1]
-
 			words[i-1] = prevWord + "'"
-			countQuote += strings.Count(words[i], "'")
+			// countQuote += strings.Count(words[i], "'")
 			fmt.Printf(" prevWord:%v words: %v", prevWord, words)
-			fmt.Printf(" countQuote:%v", countQuote)
-		} else if strings.HasSuffix(words[i], "'") && !openQuote && i < len(words) - 1 {
+			fmt.Printf(" pref countQuote:%v", countQuote)
+		}
+		countQuote += strings.Count(words[i], "'")
+		openQuote = countQuote%2 == 1
+		fmt.Printf(" MIDDLE cQt: %v oQt:%v", countQuote, openQuote)
+
+		if strings.HasSuffix(words[i], "'") && openQuote && i < len(words)-1 {
 			words[i] = strings.TrimSuffix(words[i], "'")
 			if words[i] == "" {
 				words = slices.Delete(words, i, i+1)
 				i--
 			}
-			countQuote += strings.Count(words[i], "'")
+			// countQuote += strings.Count(words[i], "'")
 			words[i+1] = "'" + words[i+1]
 			fmt.Printf(" words[i+1]:%v words: %v", words[i+1], words)
 			fmt.Printf(" countQuote:%v", countQuote)
-		}  else  if strings.Contains(words[i], "'") {
+		}
+
+		/* if strings.Contains(words[i], "'") {
 			countQuote += strings.Count(words[i], "'")
 			fmt.Printf(" countQuote:%v", countQuote)
-		}
+		}*/
 
 	}
 	/*	if openQuote {
-		err = errors.New("open quote, missing closing quote")
-		return words, err		} else if strings.Contains(words[i], "'") {
-			countQuote += strings.Count(words[i], "'")
-			fmt.Printf(" countQuote:%v", countQuote)
+			err = errors.New("open quote, missing closing quote")
+			return words, err		} else if strings.Contains(words[i], "'") {
+				countQuote += strings.Count(words[i], "'")
+				fmt.Printf(" countQuote:%v", countQuote)
 
-	}
+		}
 	*/
 	print("Processing quotes...")
 	return words, nil

@@ -104,7 +104,7 @@ func processQuotes(words []string) (oWords []string, err error) {
 			countQuote++
 			openQuote = countQuote%2 == 1
 
-			// openQuote
+			// openQuot	// !openQuotee
 			if openQuote && i < len(words)-1{
 				nextWord := words[i+1]
 				words[i+1] = "'" + nextWord
@@ -120,9 +120,9 @@ func processQuotes(words []string) (oWords []string, err error) {
 			i--
 		} else if strings.HasPrefix(words[i], "'") {
 			if openQuote && i > 0 {
-				countQuote++
+/*				countQuote++
 				openQuote = countQuote%2 == 1
-				prevWord := words[i-1]
+*/				prevWord := words[i-1]
 				words[i-1] = prevWord + "'"
 				words[i] = strings.TrimPrefix(words[i], "'")
 				fmt.Printf(" prevWord:%v words: %v", prevWord, words)
@@ -144,7 +144,9 @@ func processQuotes(words []string) (oWords []string, err error) {
 
 		if strings.HasSuffix(words[i], "'") && openQuote && i < len(words)-1 {
 			words[i] = strings.TrimSuffix(words[i], "'")
-			/* if words[i] == "" {
+			/* if words[i] == "" {				countQuote++
+				openQuote = countQuote%2 == 1
+
 				words = slices.Delete(words, i, i+1)
 				i--
 			}*/

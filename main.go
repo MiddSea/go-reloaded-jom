@@ -105,45 +105,51 @@ func processQuotes(words []string) (oWords []string, err error) {
 			openQuote = countQuote%2 == 1
 
 			// openQuote
-			if openQuote && i > 0 {
-				prevWord := words[i-1]
-				words[i-1] = "'" + prevWord
-				// !openQuote
-			} else if !openQuote && i < len(words)-1 {
+			if openQuote && i < len(words)-1{
 				nextWord := words[i+1]
-				words[i+1] = nextWord + "'"
+				words[i+1] = "'" + nextWord
+			} else if !openQuote && i > 0  {
+			// !openQuote
+				prevWord := words[i-1]
+				words[i-1] = prevWord + "'"
 			}
 
 			// delete current word
 			words = slices.Delete(words, i, i+1)
 			// TO DO: check if 'i' needs to be decremented
-			//i--
-		} 
-		if strings.HasPrefix(words[i], "'") && openQuote && i > 0 {
-			countQuote++
-			words[i] = strings.TrimPrefix(words[i], "'")
-			prevWord := words[i-1]
-			if words[i] == "" {
-				words = slices.Delete(words, i, i+1)
-			}
+			i--
+		} else if strings.HasPrefix(words[i], "'") {
+			if openQuote && i > 0 {
+				countQuote++
+				openQuote = countQuote%2 == 1
+				prevWord := words[i-1]
+				words[i-1] = prevWord + "'"
+				words[i] = strings.TrimPrefix(words[i], "'")
+				fmt.Printf(" prevWord:%v words: %v", prevWord, words)
+				fmt.Printf(" pref countQuote:%v", countQuote)
+			} /* else if !openQuote && i < len(words)-1 {
+				nextWord := words[i+1]
+				words[i+1] = nextWord + "'"
+			} */
+			//prevWord := words[i-1]
+			//if words[i] == "" {
+			//	words = slices.Delete(words, i, i+1)
+			//}
 
-			words[i-1] = prevWord + "'"
-			// countQuote += strings.Count(words[i], "'")
-			fmt.Printf(" prevWord:%v words: %v", prevWord, words)
-			fmt.Printf(" pref countQuote:%v", countQuote)
+			/* words[i-1] = prevWord + "'" */ // countQuote += strings.Count(words[i], "'")
 		}
 		countQuote += strings.Count(words[i], "'")
 		openQuote = countQuote%2 == 1
-		fmt.Printf(" MIDDLE cQt: %v oQt:%v", countQuote, openQuote)
+		fmt.Printf(" MIDDLE cQt: %v oQt:%v", countQuote, !openQuote)
 
 		if strings.HasSuffix(words[i], "'") && openQuote && i < len(words)-1 {
 			words[i] = strings.TrimSuffix(words[i], "'")
-			if words[i] == "" {
+			/* if words[i] == "" {
 				words = slices.Delete(words, i, i+1)
 				i--
-			}
+			}*/
 			// countQuote += strings.Count(words[i], "'")
-			words[i+1] = "'" + words[i+1]
+			words[i+1] = words[i+1] + "'"
 			fmt.Printf(" words[i+1]:%v words: %v", words[i+1], words)
 			fmt.Printf(" countQuote:%v", countQuote)
 		}

@@ -117,7 +117,7 @@ func processQuotes(words []string) (oWords []string, err error) {
 			// delete current word
 			words = slices.Delete(words, i, i+1)
 			// TO DO: check if 'i' needs to be decremented
-			i--
+			// i--
 		} else if strings.HasPrefix(words[i], "'") {
 			if openQuote && i > 0 {
 /*				countQuote++
@@ -125,7 +125,7 @@ func processQuotes(words []string) (oWords []string, err error) {
 */				prevWord := words[i-1]
 				words[i-1] = prevWord + "'"
 				words[i] = strings.TrimPrefix(words[i], "'")
-				fmt.Printf(" prevWord:%v words: %v", prevWord, words)
+				fmt.Printf(" prevWord:%v \n\tWORDS: %q", prevWord, words)
 				fmt.Printf(" pref countQuote:%v", countQuote)
 			} /* else if !openQuote && i < len(words)-1 {
 				nextWord := words[i+1]

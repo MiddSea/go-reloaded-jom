@@ -304,8 +304,8 @@ func outOfWordsBounds(wrds []string, i, b int) (bool, error) {
 //	return wdOut, qtOpenI
 //}
 
-func isQuote(r rune) bool {
-	return r == QUOTE
+func isQuote(s string) bool {
+	return s == QUOTE
 }
 
 /* func addRunePrefixToString(r rune, s string) string {
@@ -315,6 +315,11 @@ func isQuote(r rune) bool {
 	return string(cpRs)
 } */
 
+/*func isSpace(r rune) bool {
+	return r == ' ' || r == '\t' || r == '\n'
+}
+	*/
+	
 func isSpace(r rune) bool {
 	return r == ' ' || r == '\t' || r == '\n'
 }

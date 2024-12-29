@@ -11,6 +11,11 @@ import (
 	"fmt"
 )
 
+const QUOTE = "'" 
+const SPACE = " "
+const Q_OPEN = true
+const Q_CLOSE = false 
+
 func main() {
 	err := checkArgs(os.Args)
 	checkError(err)
@@ -93,40 +98,50 @@ func processTxt(txt string) (oTxt string, err error) {
 }
 func processQuotes(words []string) (oWords []string, err error) {
 	countQuote := 0
-	openQuote := false
+	openQuote := Q_CLOSE
 	print("processing quotes...")
 	for i := 0; i < len(words); i++ {
 		fmt.Printf("\n\tword %v", i)
 		// words[i] := words[i]
-		fmt.Printf(":%q ", words)
-		openQuote = countQuote%2 == 1
-		if words[i] == "'" {
-			countQuote++
-			openQuote = countQuote%2 == 1
+		fmt.Printf(":%8v ", words)
+		
+		// set OpenQuote later
+		// openQuote = countQuote%2 == 1
+		// word is only quote
+		if words[i] == QUOTE {
+			// countQuote++
+			// openQuote = countQuote%2 == 1
 
 			// openQuot	// !openQuotee
-			if openQuote && i < len(words)-1{
+			if !openQuote && i < len(words)-1 { 
 				nextWord := words[i+1]
 				words[i+1] = "'" + nextWord
-			} else if !openQuote && i > 0  {
+				// delete current word
+				words = slices.Delete(words, i, i+1)
+			} else if openQuote && i > 0  {
 			// !openQuote
 				prevWord := words[i-1]
 				words[i-1] = prevWord + "'"
+				// delete current word
+				words = slices.Delete(words, i, i+1)
+				countQuote++
+				openQuote = countQuote%2 == 1
 			}
 
-			// delete current word
-			words = slices.Delete(words, i, i+1)
 			// TO DO: check if 'i' needs to be decremented
 			// i--
-		} else if strings.HasPrefix(words[i], "'") {
+		} else if strings.HasPrefix(words[i], "'") && len(words[i]) > 1 {
 			if openQuote && i > 0 {
 /*				countQuote++
 				openQuote = countQuote%2 == 1
 */				prevWord := words[i-1]
 				words[i-1] = prevWord + "'"
 				words[i] = strings.TrimPrefix(words[i], "'")
-				fmt.Printf(" prevWord:%v \n\tWORDS: %q", prevWord, words)
+				countQuote++
+				openQuote = countQuote%2 == 1
+				fmt.Printf(" prevWord:%v \noQ%2v\tPref: %8v", prevWord, openQuote, words)
 				fmt.Printf(" pref countQuote:%v", countQuote)
+
 			} /* else if !openQuote && i < len(words)-1 {
 				nextWord := words[i+1]
 				words[i+1] = nextWord + "'"
@@ -140,7 +155,7 @@ func processQuotes(words []string) (oWords []string, err error) {
 		}
 		countQuote += strings.Count(words[i], "'")
 		openQuote = countQuote%2 == 1
-		fmt.Printf(" MIDDLE cQt: %v oQt:%v", countQuote, !openQuote)
+		fmt.Printf(" MIDDLE cQt: %v oQt:%v", countQuote, openQuote)
 
 		if strings.HasSuffix(words[i], "'") && openQuote && i < len(words)-1 {
 			words[i] = strings.TrimSuffix(words[i], "'")
@@ -151,8 +166,8 @@ func processQuotes(words []string) (oWords []string, err error) {
 				i--
 			}*/
 			// countQuote += strings.Count(words[i], "'")
-			words[i+1] = words[i+1] + "'"
-			fmt.Printf(" words[i+1]:%v words: %v", words[i+1], words)
+			words[i+1] = QUOTE + words[i+1] 
+			fmt.Printf(" words[i]:%v words: %8v", words[i+1], words)
 			fmt.Printf(" countQuote:%v", countQuote)
 		}
 
@@ -170,7 +185,7 @@ func processQuotes(words []string) (oWords []string, err error) {
 
 		}
 	*/
-	print("Processing quotes...")
+	print("...Processing quotes")
 	return words, nil
 }
 

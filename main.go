@@ -76,7 +76,7 @@ func checkError(err error) {
 }
 
 func processTxt(txt string) (oTxt string, err error) {
-	// split text into words ignoring multiple white spaces.
+	// split text i  nto words ignoring multiple white spaces.
 	words := strings.Fields(txt)
 	// quoteCount := 0
 

@@ -1,4 +1,4 @@
-module main.go
+module reloaders
 
 go 1.23.3
 

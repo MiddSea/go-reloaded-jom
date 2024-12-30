@@ -6,7 +6,7 @@ import (
 	"slices"
 	"strconv"
 	"strings"
-
+	reloaders "reloaders/reloaders"
 	//"errors"
 	"fmt"
 )
@@ -33,6 +33,9 @@ func main() {
 	checkError(err)
 	fmt.Println("Conversion successful. Result saved in:", resultOutFile)
 
+	seansString := "Hello, world! How are you doing? I'm doing well."
+	seansString = reloaders.PunctuationShift(seansString)
+	fmt.Println(seansString)
 }
 
 func checkArgs(args []string) (err error) {

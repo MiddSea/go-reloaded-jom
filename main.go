@@ -3,18 +3,19 @@ package main
 import (
 	"log"
 	"os"
+	reloaders "reloaders/reloaders"
 	"slices"
 	"strconv"
 	"strings"
-	reloaders "reloaders/reloaders"
+
 	//"errors"
 	"fmt"
 )
 
-const SNGL_QUOTE = "'" // single quote 
+const SNGL_QUOTE = "'" // single quote
 const SPACE = " "
 const Q_OPEN = true
-const Q_CLOSE = false 
+const Q_CLOSE = false
 
 func main() {
 	err := checkArgs(os.Args)
@@ -33,7 +34,7 @@ func main() {
 	checkError(err)
 	fmt.Println("Conversion successful. Result saved in:", resultOutFile)
 
-	seansString := "Hello, world! How are you doing? I'm doing well."
+	seansString := "Hello' , ' wor' ld! How ar' e yo' u do' ing? I'm doing well."
 	seansString = reloaders.PunctuationShift(seansString)
 	fmt.Println(seansString)
 }
@@ -107,7 +108,7 @@ func processQuotes(words []string) (oWords []string, err error) {
 		fmt.Printf("\n\tword %v", i)
 		// words[i] := words[i]
 		fmt.Printf(":%8v ", words)
-		
+
 		// set OpenQuote later
 		// openQuote = countQuote%2 == 1
 		// word is only quote
@@ -116,13 +117,13 @@ func processQuotes(words []string) (oWords []string, err error) {
 			// openQuote = countQuote%2 == 1
 
 			// openQuot	// !openQuotee
-			if !openQuote && i < len(words)-1 { 
+			if !openQuote && i < len(words)-1 {
 				nextWord := words[i+1]
 				words[i+1] = SNGL_QUOTE + nextWord
 				// delete current word
 				words = slices.Delete(words, i, i+1)
-			} else if openQuote && i > 0  {
-			// !openQuote
+			} else if openQuote && i > 0 {
+				// !openQuote
 				prevWord := words[i-1]
 				words[i-1] = prevWord + SNGL_QUOTE
 				// delete current word
@@ -135,9 +136,9 @@ func processQuotes(words []string) (oWords []string, err error) {
 			// i--
 		} else if strings.HasPrefix(words[i], SNGL_QUOTE) && len(words[i]) > 1 {
 			if openQuote && i > 0 {
-/*				countQuote++
-				openQuote = countQuote%2 == 1
-*/				prevWord := words[i-1]
+				/*				countQuote++
+								openQuote = countQuote%2 == 1
+				*/prevWord := words[i-1]
 				words[i-1] = prevWord + SNGL_QUOTE
 				words[i] = strings.TrimPrefix(words[i], SNGL_QUOTE)
 				countQuote++
@@ -157,7 +158,7 @@ func processQuotes(words []string) (oWords []string, err error) {
 			/* words[i-1] = prevWord + SNGL_QUOTE */ // countQuote += strings.Count(words[i], SNGL_QUOTE)
 		}
 		// TO DO count quotes
-		if strings.HasSuffix(words[i], SNGL_QUOTE)  {
+		if strings.HasSuffix(words[i], SNGL_QUOTE) {
 			countQuote += strings.Count(words[i][:strings.LastIndex(words[i], SNGL_QUOTE)], SNGL_QUOTE)
 			openQuote = countQuote%2 == 1
 			fmt.Printf(" MIDDLE cQt: %v oQt:%v", countQuote, openQuote)
@@ -165,21 +166,18 @@ func processQuotes(words []string) (oWords []string, err error) {
 				words[i] = strings.TrimSuffix(words[i], SNGL_QUOTE)
 				words[i+1] = SNGL_QUOTE + words[i+1]
 				fmt.Printf(" words[i]:%v words: %10v", words[i+1], words)
-				fmt.Printf(" countQuote:%v", countQuote) 
-			}  else  {
+				fmt.Printf(" countQuote:%v", countQuote)
+			} else {
 				countQuote += strings.Count(words[i], SNGL_QUOTE)
 				openQuote = countQuote%2 == 1
-			} 
+			}
 		} else {
 			fmt.Printf(" MIDDLE cQt: %v oQt:%v", countQuote, openQuote)
 			countQuote += strings.Count(words[i], SNGL_QUOTE)
 			openQuote = countQuote%2 == 1
 		}
-		
 
-
-		// 
-
+		//
 
 		/* if strings.Contains(words[i], SNGL_QUOTE) {
 			countQuote += strings.Count(words[i], SNGL_QUOTE)

@@ -7,9 +7,14 @@ import (
 // PunctuationFormat formats the punctuation marks in a string
 func PunctuationShift(line string) string {
 	// Regular expression to match any spaces around single punctuation marks
+	// spacesBfPunc := regexp.MustCompile(`\s*([.,!?:;])`)
+	
+	// Regular expression to match any spaces before single punctuation marks
 	spacesBfPunc := regexp.MustCompile(`\s*([.,!?:;])`)
+
 	// Regular expression to match any spaces between single quotes
 	spBtwnSglQuotes := regexp.MustCompile(`'\s*(.*?)\s*'`)
+	
 	// Regular expression to match any spaces around single punctuation marks before an alphabetical character
 	puncAlpha := regexp.MustCompile(`([.,!?:;])([[:alpha:]])`)
 

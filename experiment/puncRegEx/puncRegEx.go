@@ -29,6 +29,6 @@ Punctuation tests are ... kinda boring ,what do you think ?
 	seanStrAtoAn	:= reloaded.AtoAnRegEx(seanStr)
 	fmt.Println(" after a to A", seanStrAtoAn)
 	fmt.Println(seanStr)
-	seanStr	= reloaded.PunctuationFormatSimple(seanStr)
+	seanStr	= reloaded.PunctuationRegEx(seanStr)
 	fmt.Println(seanStr)
 }

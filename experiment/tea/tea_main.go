@@ -86,39 +86,39 @@ func check(e error) {
 }
 
 // BULK of string replace happens here
-func processWords(wrds []string) (oWrds []string, err error) {
+//func processWords(wrds []string) (oWrds []string, err error) {
 
-	wrds, err = processQuotes(wrds)
-	check(err)
-	// delete empty words
-	// in quotes
+//	wrds, err = processQuotes(wrds)
+//	check(err)
+//	// delete empty words
+//	// in quotes
 
-	wrds, err = processPunctuation(wrds)
-	check(err)
-	// delete empty words
-	// in puctuation
+//	wrds, err = processPunctuation(wrds)
+//	check(err)
+//	// delete empty words
+//	// in puctuation
 
-	// delete empty words (probaly not needed)
-	// if wd == "" {
-	// words = slices.Delete(words, i)
-	//}
-	//
+//	// delete empty words (probaly not needed)
+//	// if wd == "" {
+//	// words = slices.Delete(words, i)
+//	//}
+//	//
 
-	// TO DO:
-	wrds, err = processAandAn(wrds)
-	check(err)
-	// delete empty words
-	// in AandA
+//	// TO DO:
+//	wrds, err = processAandAn(wrds)
+//	check(err)
+//	// delete empty words
+//	// in AandA
 
-	// TO DO:
-	// Process bin, hex,
-	// and single of multiple words with
-	// commands Cap(), Up(), Low()
-	wrds, err = processCommands(wrds)
-	check(err)
+//	// TO DO:
+//	// Process bin, hex,
+//	// and single of multiple words with
+//	// commands Cap(), Up(), Low()
+//	wrds, err = processCommands(wrds)
+//	check(err)
 
-	return wrds, nil
-}
+//	return wrds, nil
+//}
 
 // processQuotesInPutString processes the input string to handle single quotes and spaces.
 // It iterates through the input string, identifying single quotes and spaces to determine
@@ -251,7 +251,7 @@ func processAandAn(wrds []string) (oWrds []string, err error) {
     for i := 0; i <= lastWrd - 1; i++ { // 
 	if (wrds[i] == "a" || wrds[i] == "A") && 
 	(i <= lastWrd && strings.IndexAny(wrds[i+1], VOWELS_H) == 0) {
-	    Owrds[i] = Owrds[i] + "n"
+		oWrds[i] = oWrds[i] + "n"
 		// TO DO: check if this is correct 2024-12-27_19-13 
 	    }
     }
@@ -259,7 +259,7 @@ func processAandAn(wrds []string) (oWrds []string, err error) {
 	// is vowel of "h" {
 		
 
-	return Owrds, errors.New("index out of bounds")
+	return oWrds, errors.New("index out of bounds")
 	}
 
 
@@ -324,52 +324,53 @@ func isSpace(r rune) bool {
 	return r == ' ' || r == '\t' || r == '\n'
 }
 
+// ABANDONED
 // processPunctuation processes the input string to handle punctuation.
 // It iterates through the input string, identifying punctuation characters and spaces to determine
 // the start and end indices of punctuation sections and eliminate spaces between them
-func processPunctuation(wrds []string) (outWords []string, err error) {
-	// tag first space character after non-space character
-	// if it's punctuation move character to position of first space character after non-space character
-	spcAfterLastWordIndex := -1
+//func processPunctuation(wrds []string) (outWords []string, err error) {
+//	// tag first space character after non-space character
+//	// if it's punctuation move character to position of first space character after non-space character
+//	// spcAfterLastWordIndex := -1
 
-	wasSpace := false
-	outWords := []string(wrds) // copied as rune array for safe easy
-	// indexing and access to previous runes
-	// var puncToMove rune
+//	wasSpace := false
+//	outWords = []string(wrds) // copied as rune array for safe easy
+//	// indexing and access to previous runes
+//	// var puncToMove rune
 
-	fmt.Printf("puncutation: >>%v<<, punc outWords: %v\n", string(outWords))
-	for i, r := range outWords {
-		// set spcAfterLastWordIndex to index of first space after non-space character
-		if isSpace(r) && i > 0 && !isSpace(outWords[i-1]) {
-			spcAfterLastWordIndex = i
-			wasSpace = true
-		}
-		// TO DO: is this correct??
-		if !isSpace(r) && i > 0 && isSpace(outWords[i-1]) && wasSpace {
-			outWords[i-1] = r
-			outWords[i] = ' '
-			wasSpace = false
-		}
+//	fmt.Printf("puncutation: >>%v<<, punc outWords: %v\n", outWords)
+//	for i, r := range outWords {
+//		// set spcAfterLastWordIndex to index of first space after non-space character
+//		if isSpace(r) && i > 0 && !isSpace(outWords[i-1]) {
+//			spcAfterLastWordIndex = i
+//			wasSpace = true
+//		}
+//		// TO DO: is this correct??
+//		if !isSpace(r) && i > 0 && isSpace(outWords[i-1]) && wasSpace {
+//			outWords[i-1] = r
+//			outWords[i] = ' '
+//			wasSpace = false
+//		}
 
-		// move all PUNCTUATION to left after non-space character
+//		// move all PUNCTUATION to left after non-space character
 
-		// move spaces along until reach current i index
-		// TO DO:
-		//for isSpace(r) && {
-		// move spaces along until reach current i index
-		//}
+//		// move spaces along until reach current i index
+//		// TO DO:
+//		//for isSpace(r) && {
+//		// move spaces along until reach current i index
+//		//}
 
-		fmt.Printf("punc i: %2dr: %c| %v\n", i, r, string(outWords))
-	}
-	// TODO: check for punctuation at end of string
-	// outWords = string(outWords)
-	return outWords, nil
-	// return outWords, nil
-	// err := errors.New("punctuation processing failed")
-	// return "", err
-	// return sOutput, nil
+//		fmt.Printf("punc i: %2dr: %c| %v\n", i, r, string(outWords))
+//	}
+//	// TODO: check for punctuation at end of string
+//	// outWords = string(outWords)
+//	return outWords, nil
+//	// return outWords, nil
+//	// err := errors.New("punctuation processing failed")
+//	// return "", err
+//	// return sOutput, nil
 
-}
+//}
 
 func isPunctuation(r rune) bool {
 	if slices.Contains(punctuation, r) {

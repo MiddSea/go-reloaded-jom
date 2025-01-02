@@ -6,7 +6,7 @@ import (
 	"slices"
 	"strconv"
 	"strings"
-
+	"reloaded/reloaded"
 	//"errors"
 	"fmt"
 )
@@ -77,18 +77,28 @@ func checkError(err error) {
 
 func processTxt(txt string) (oTxt string, err error) {
 	// split text into words ignoring multiple white spaces.
-	words := strings.Fields(txt)
+//	words := strings.Fields(txt)
 	// quoteCount := 0
 
-	words, err = processQuotes(words)
-	checkError(err)
+//	words, err = processQuotes(words)
+//	checkError(err)
 
-	words, err = processPunctuation(words)
-	checkError(err)
+//	words, err = processPunctuation(words)
+//	checkError(err)
 
-	words, err = processAorAn(words)
-	checkError(err)
+//	words, err = processAorAn(words)
+//	checkError(err)
 
+	// correct punctuation marks from words, incl quotes
+    txt = reloaded.PunctuationRegEx(txt)
+
+	// correct 'a' to 'an' before vowels
+	txt = reloaded.AtoAnRegEx(txt)
+
+	// split text into words ignoring multiple white spaces.
+	words := strings.Fields(txt)
+
+	
 	// process commands bin, hex,
 	// and cap, low, up for single words multiple words.
 	words, err = processCommands(words)

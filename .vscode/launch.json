@@ -17,6 +17,17 @@
         ]
     },
     {
+      "name": "Launch with sampleTesting + resultsTesting.txt Package",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}",
+      "args": [
+        "sampleTesting.txt",
+        "resultsTesting.txt"
+        ]
+    },
+    {
       "name": "aha d",
       "type": "go",
       

@@ -65,8 +65,8 @@ func main() {
 		print("words after fields:", words, "\n")
 
 		// process Words
-		words, err := processWords(words)
-		check(err)
+		// words, err := processWords(words)
+		// check(err)
 
 		// TO DO remove RETURNS
 		// join words back into string
@@ -138,7 +138,7 @@ func processQuotes(wrds []string) (outWrds []string, err error) {
 	// fmt.Printf("i: %cr: %c| %v\n", string(sOutputR))
 	for iWd, wd := range wrds {
 		// TO DO:
-		if strings.HasPrefix(wd, QUOTE) && iWd > 0 && openQuote == Q_OPEN {
+		if strings.HasPrefix(wd, QUOTE) && iWd > 0 && openQuote {
 			// add quote to end of previous word
 			wrds[iWd-1] = addSuffixToString(wrds[iWd-1], QUOTE)
 			// trim quote from beginning of current word
@@ -372,8 +372,8 @@ func isSpace(r rune) bool {
 
 //}
 
-func isPunctuation(r rune) bool {
-	if slices.Contains(punctuation, r) {
+ func isPunctuation(r rune) bool {
+	if strings.ContainsRune(PUNCTUATION, r) {
 		return true
 	}
 	return false

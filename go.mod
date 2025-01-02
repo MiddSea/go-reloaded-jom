@@ -1,4 +1,4 @@
-module reloaders
+module reloaded
 
 go 1.23.3
 

@@ -3,11 +3,10 @@ package main
 import (
 	"log"
 	"os"
-	reloaders "reloaders/reloaders"
 	"slices"
 	"strconv"
 	"strings"
-
+	"reloaded/reloaded"
 	//"errors"
 	"fmt"
 )
@@ -34,9 +33,6 @@ func main() {
 	checkError(err)
 	fmt.Println("Conversion successful. Result saved in:", resultOutFile)
 
-	seansString := "Hello' , ' wor' ld! How ar' e yo' u do' ing? I'm doing well."
-	seansString = reloaders.PunctuationShift(seansString)
-	fmt.Println(seansString)
 }
 
 func checkArgs(args []string) (err error) {
@@ -80,19 +76,29 @@ func checkError(err error) {
 }
 
 func processTxt(txt string) (oTxt string, err error) {
-	// split text i  nto words ignoring multiple white spaces.
-	words := strings.Fields(txt)
+	// split text into words ignoring multiple white spaces.
+//	words := strings.Fields(txt)
 	// quoteCount := 0
 
-	words, err = processQuotes(words)
-	checkError(err)
+//	words, err = processQuotes(words)
+//	checkError(err)
 
-	words, err = processPunctuation(words)
-	checkError(err)
+//	words, err = processPunctuation(words)
+//	checkError(err)
 
-	words, err = processAorAn(words)
-	checkError(err)
+//	words, err = processAorAn(words)
+//	checkError(err)
 
+	// correct punctuation marks from words, incl quotes
+    txt = reloaded.PunctuationRegEx(txt)
+
+	// correct 'a' to 'an' before vowels
+	txt = reloaded.AtoAnRegEx(txt)
+
+	// split text into words ignoring multiple white spaces.
+	words := strings.Fields(txt)
+
+	
 	// process commands bin, hex,
 	// and cap, low, up for single words multiple words.
 	words, err = processCommands(words)

@@ -46,7 +46,7 @@ func PunctuationRegEx(line string) string {
       line = spaceBeforePunc.ReplaceAllString(line, "$1")
       
       // Then add space after punctuation, but we'll clean up extras later
-      spaceAfterPunc := regexp.MustCompile(`([.,!?])([^.,!?' \t])`)
+      spaceAfterPunc := regexp.MustCompile(`([.,!?])([^.,!?'\s])`)
       line = spaceAfterPunc.ReplaceAllString(line, "$1 $2")
       
       // Clean up any multiple spaces that might have been created

@@ -28,6 +28,8 @@ Punctuation tests are ... kinda boring ,what do you think ?
 	fmt.Println(seanStr)
 	// seanStrOldPunk	:= reloaded.PunctuationFormat(seanStr)
 	//fmt.Println("after punct  ", seanStrOldPunk)
+	seanStr	= reloaded.PunctuationRegEx(seanStr)
+	fmt.Println(seanStr)
 	seanStrAtoAn	:= reloaded.AtoAnRegEx(seanStr)
 	fmt.Println(" after a to A", seanStrAtoAn)
 	fmt.Println(seanStr)

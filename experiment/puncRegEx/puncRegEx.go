@@ -7,8 +7,7 @@ import (
 
 func main() {
 	seanStr	:= 
-` ' hello world 'A ' apple .' ... ???' ??? ' ??? 'assd 
-a orange '  
+` ' hello world 'A ' apple .' ... ???' ??? ' ??? 'assd a orange '  
 `  
 /* ' She 'said ' hello ' world' 
 101 (bin)
@@ -30,9 +29,9 @@ Punctuation tests are ... kinda boring ,what do you think ?
 	//fmt.Println("after punct  ", seanStrOldPunk)
 	seanStr	= reloaded.PunctuationRegEx(seanStr)
 	fmt.Println(seanStr)
-	seanStrAtoAn	:= reloaded.AtoAnRegEx(seanStr)
-	fmt.Println(" after a to A", seanStrAtoAn)
 	fmt.Println(seanStr)
 	seanStr	= reloaded.PunctuationRegEx(seanStr)
-	fmt.Println(seanStr)
+	fmt.Println("After Punc: ", seanStr)
+	seanStrAtoAn	:= reloaded.AtoAnRegEx(seanStr)
+	fmt.Println("after qa2A: ", seanStrAtoAn)
 }

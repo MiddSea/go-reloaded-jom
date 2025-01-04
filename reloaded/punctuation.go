@@ -15,17 +15,40 @@ func PunctuationRegEx(line string) string {
 
       // Handle multiple sequential punctuation (like ..., ?!, etc.)
       // First combine them without spaces
-      multiPunc := regexp.MustCompile(`\s*([.,!?]+)\s*`)
+      multiPunc := regexp.MustCompile(`\s*([:;.,!?]+)\s*`)
       line = multiPunc.ReplaceAllString(line, "$1")
       
       // Handle colons before quotes
       //colonQuote := regexp.MustCompile(`([\w]+)[ \t]*:[ \t]*'`)
       // added round brackets to include ) in the word
-	  colonQuote := regexp.MustCompile(`([\w)]+)\s*:\s*'`)
-      line = colonQuote.ReplaceAllString(line, "$1: '")
-      
+	  // colonQuote := regexp.MustCompile(`([\w)]+)\s*:\s*'`)
+      // line = colonQuote.ReplaceAllString(line, "$1: '")
+      // probably not needed 
+
       // Handle quoted text
-      quotes := regexp.MustCompile(`'([^']*)'`)
+
+      openQuote := false
+      countQuote := 0
+      spBfQuote := regexp.MustCompile(`[^\s]*(['])`)
+      quoteBfSp := regexp.MustCompile(`(['][\s*$]*)`)
+      loc :=  spBfQuote.FindStringIndex(line)
+      
+        if loc != nil {
+
+      for i, c := range line {
+          if c == '\'' {
+              countQuote++
+              if countQuote%2 == 1 {
+                  openQuote = true
+              } else {
+                  openQuote = false
+              }
+          }
+          if openQuote && c == ':' {
+              line = line[:i] + " " + line[i:]
+          }
+      }      
+      /* quotes := regexp.MustCompile(`'([^']*)'`)
       line = quotes.ReplaceAllStringFunc(line, func(match string) string {
           inner := quotes.FindStringSubmatch(match)[1]
           // Clean up spaces inside quotes
@@ -35,7 +58,7 @@ func PunctuationRegEx(line string) string {
 
           // Fix punctuation inside quotes
           inner = multiPunc.ReplaceAllString(inner, "$1")
-          return "'" + inner + "'"
+          return " '" + inner + "' "
       })
       
       // Process single punctuation marks
@@ -151,4 +174,4 @@ func AtoAnRegEx(line string) string {
 	line = aBfvowel_H.ReplaceAllString(line, `${1}n${2}`)
 
 	return line
-}
+} */

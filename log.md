@@ -7,13 +7,12 @@
 - 2024-12-27
   - 15-45: stop and think.
 - 2025-01-03
-- - 16-14 working on puctuation, get this finnish by tonight. 
-- - 16-16 fix space before quote
-- - 17-09 change "[ \t]" to \s
-- - 17-48 dinner break
-- - 18-36 back to work
-- - 19-00 working on puctuation...
-- 
-
-
-  
+  - 16-14 working on puctuation, get this finnish by tonight. 
+  - 16-16 fix space before quote
+  - 17-09 change "[ \t]" to \s
+  - 17-48 dinner break
+  - 18-36 back to work
+  - 19-00 working on puctuation...
+  - ... carrying on through the night
+- 2025-01-04 transfering
+  - 02-02 starting to transfer to gitea

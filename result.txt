@@ -1,1 +1,1 @@
-' blank openclose blank openclose
+'abc 123' happ friend '
